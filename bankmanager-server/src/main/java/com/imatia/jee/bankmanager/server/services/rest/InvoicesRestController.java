@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.sql.Types;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,10 +79,14 @@ public class InvoicesRestController extends ORestController<IInvoices> {
 			System.out.println("Tamaño del archivo: " + files[i].getSize());
 			System.out.println("Numero de archivos: " + files.length);
 			
-			File file = new File(ruta, files[i].getOriginalFilename());
+			File file = new File(ruta, generateName(files[i].getOriginalFilename()));
 			Files.copy(fileContent, file.toPath());
 			
 		}
 		return ResponseEntity.ok("-----SE SUBIO EL ARCIHVO-----");
+	}
+
+	private String generateName(String originalFilename) {
+		return new StringBuilder().append(new Date().getTime()).append(originalFilename).toString();
 	}
 }
